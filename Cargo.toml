@@ -14,16 +14,16 @@ repository = "https://github.com/jopohl/sigma-rust"
 [dependencies]
 base64 = "0.22.1"
 cidr = "0.3.2"
-regex = "1.11.0"
-serde = { version = "1.0.210", features = ["derive"] }
+regex = "1.12.4"
+serde = { version = "1.0.228", features = ["derive"] }
 serde_yml = "0.0.13"
 strum = { version = "0.28.0", features = ["derive"] }
 thiserror = "2.0.18"
-serde_json = { version = "1.0.132", optional = true }
+serde_json = { version = "1.0.150", optional = true }
 
 [dev-dependencies]
 walkdir = "2.5.0"
-criterion = { version = "0.8", features = ["html_reports"] }
+criterion = { version = "0.8.2", features = ["html_reports"] }
 
 [[bench]]
 name = "matching_benchmark"
