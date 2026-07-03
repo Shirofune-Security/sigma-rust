@@ -8,8 +8,10 @@ use walkdir::WalkDir;
 /// resolver turns unquoted leading-zero scalars such as `00000429` into
 /// integers (the previous resolver kept them as strings), and string modifiers
 /// like `contains` reject integer values with a parse error.
+/// Paths are relative to the corpus root, with `/` separators.
 /// Remove entries once the upstream rules quote these values.
-const KNOWN_INCOMPATIBLE_RULES: &[&str] = &["registry_set_susp_keyboard_layout_load.yml"];
+const KNOWN_INCOMPATIBLE_RULES: &[&str] =
+    &["rules/windows/registry/registry_set/registry_set_susp_keyboard_layout_load.yml"];
 
 #[test]
 fn test_parse_sigma_main_rules() {
@@ -22,8 +24,13 @@ fn test_parse_sigma_main_rules() {
     let start = Instant::now();
     for entry in WalkDir::new(sigma_dir).into_iter().filter_map(|e| e.ok()) {
         if entry.path().extension().and_then(|s| s.to_str()) == Some("yml") {
-            let file_name = entry.file_name().to_str().unwrap_or_default();
-            if KNOWN_INCOMPATIBLE_RULES.contains(&file_name) {
+            let relative_path = entry
+                .path()
+                .strip_prefix(sigma_dir)
+                .expect("walked entries live under the corpus root")
+                .to_string_lossy()
+                .replace('\\', "/");
+            if KNOWN_INCOMPATIBLE_RULES.contains(&relative_path.as_str()) {
                 println!("Skipping known incompatible rule {:?}", entry.path());
                 continue;
             }
