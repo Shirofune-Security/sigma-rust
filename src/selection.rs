@@ -78,7 +78,7 @@ impl TryFrom<Value> for Selection {
                                 return Err(Self::Error::SelectionParsingError(
                                     String::new(),
                                     InvalidKeywordSelection(format!("{:?}", value)),
-                                ))
+                                ));
                             }
                         }
                     }
@@ -95,7 +95,7 @@ impl TryFrom<Value> for Selection {
                             return Err(Self::Error::SelectionParsingError(
                                 String::new(),
                                 MixedKeywordAndFieldlist(),
-                            ))
+                            ));
                         }
                     }
                 }
